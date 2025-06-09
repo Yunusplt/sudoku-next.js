@@ -1,21 +1,30 @@
 "use client";
 import { useState } from "react";
-import { Button } from "@mui/material";
-import { example_1 } from "@/data/sudokuData";
-import { useSudokuSolver } from "@/hooks/useAutoSolver";
 import Sudoku from "@/components/Sudoku";
+import { Container } from "@mui/material";
+import { emptySudoku } from "@/data/sudokuData";
+import { styleContainer } from "@/styles/homePageStyle";
+import { useSudokuSolver } from "@/hooks/useAutoSolver";
+import DialogComponent from "@/components/DialogComponent";
+import ButtonComponent from "@/components/ButtonComponent";
 
 export default function Home() {
   //! states
-  const [sudokuValues, setSudokuValues] = useState<number[][]>(example_1);
+  const [sudokuValues, setSudokuValues] = useState<number[][]>(emptySudoku);
   const [squaresInRow, setSquaresInRow] = useState<string[] | null>(null);
   const [squaresInCol, setSquaresInCol] = useState<string[] | null>(null);
   const [squaresInSelectedBlock, setSquaresInSelectedBlock] = useState<
     string[] | null
   >(null);
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
+
+  //! functions
+  const handleClickOpenDialog = () => {
+    setIsOpenDialog(true);
+  };
 
   //! custom hook useSudokuSolver
-  const { startFocusing, handleFocus } = useSudokuSolver({
+  const { startAutoSolve, handleFocus } = useSudokuSolver({
     sudokuValues,
     squaresInRow,
     squaresInCol,
@@ -27,7 +36,7 @@ export default function Home() {
   });
 
   return (
-    <main>
+    <Container sx={styleContainer}>
       <Sudoku
         sudokuValues={sudokuValues}
         squaresInRow={squaresInRow}
@@ -36,10 +45,15 @@ export default function Home() {
         setSudokuValues={setSudokuValues}
         handleFocus={handleFocus}
       />
-
-      <Button variant="contained" onClick={startFocusing}>
-        Löse
-      </Button>
-    </main>
+      <ButtonComponent
+        handleClickOpenDialog={handleClickOpenDialog}
+        startAutoSolve={startAutoSolve}
+      />
+      <DialogComponent
+        isOpenDialog={isOpenDialog}
+        setIsOpenDialog={setIsOpenDialog}
+        setSudokuValues={setSudokuValues}
+      />
+    </Container>
   );
 }
