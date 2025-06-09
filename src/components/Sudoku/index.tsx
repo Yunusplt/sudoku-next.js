@@ -1,23 +1,18 @@
-import { Box, TextField } from "@mui/material";
 import React from "react";
+import { Box, TextField } from "@mui/material";
+import { SudokuProps } from "@/types/sudokuTypes";
+import { styleTextField } from "@/styles/sudokuStyle";
 
 const Sudoku = ({
   sudokuValues,
   squaresInCol,
   squaresInRow,
   squaresInSelectedBlock,
-  setSudokuValues,
   handleFocus,
-}: {
-  sudokuValues: number[][];
-  squaresInRow: string[] | null;
-  squaresInCol: string[] | null;
-  squaresInSelectedBlock: string[] | null;
-  setSudokuValues: React.Dispatch<React.SetStateAction<number[][]>>;
-  handleFocus: (e: React.FocusEvent<HTMLInputElement>) => void;
-}) => {
+  setSudokuValues,
+}: SudokuProps) => {
   return (
-    <>
+    <Box>
       {sudokuValues.map((row, rowIndex) => (
         <Box key={`row-${rowIndex}`} sx={{ display: "flex" }}>
           {row.map((square, colIndex) => {
@@ -46,64 +41,13 @@ const Sudoku = ({
                   setSudokuValues(updatedValues);
                 }}
                 onFocus={handleFocus}
-                slotProps={{
-                  input: {
-                    style: {
-                      caretColor: "transparent",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    },
-                  },
-                }}
-                sx={{
-                  width: 40,
-                  height: 40,
-                  "& .MuiOutlinedInput-root": {
-                    borderRadius: 0,
-                    backgroundColor: isSelected ? "#d6f5ff" : "white",
-                    "&.Mui-focused": {
-                      backgroundColor: "#86eefc",
-                    },
-                    "& fieldset": {
-                      borderWidth: "1px",
-                      borderColor: "gray",
-                      borderTop:
-                        rowIndex === 0
-                          ? "2px solid black"
-                          : rowIndex % 3 === 0
-                          ? "2px solid black"
-                          : "1px solid gray",
-                      borderBottom:
-                        rowIndex === 8 ? "2px solid black" : "1px solid gray",
-                      borderLeft:
-                        colIndex === 0
-                          ? "2px solid black"
-                          : colIndex % 3 === 0
-                          ? "2px solid black"
-                          : "1px solid gray",
-                      borderRight:
-                        colIndex === 8 ? "2px solid black" : "1px solid gray",
-                    },
-                  },
-                  "& input[type=number]": {
-                    MozAppearance: "textfield",
-                  },
-                  "& input[type=number]::-webkit-outer-spin-button": {
-                    WebkitAppearance: "none",
-                    margin: 0,
-                  },
-                  "& input[type=number]::-webkit-inner-spin-button": {
-                    WebkitAppearance: "none",
-                    margin: 0,
-                  },
-                }}
+                sx={styleTextField(rowIndex, colIndex, isSelected)}
               />
             );
           })}
         </Box>
       ))}
-    </>
+    </Box>
   );
 };
 
