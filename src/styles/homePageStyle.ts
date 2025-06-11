@@ -1,6 +1,7 @@
 export const styleContainer = {
   display: "flex",
   flexDirection: "column",
+  justifyContent: "center",
   alignItems: "center",
-  mt: 10,
+  height: "90vh",
 };

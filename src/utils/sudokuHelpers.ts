@@ -1,6 +1,29 @@
 import { sudokuBlocks } from "@/data/sudokuData";
 import { SudokuBlocksType } from "@/types/sudokuTypes";
 
+//* Identify the IDs of cells with a value of 0 (empty cells)
+export const getEmptySquares = (currentSudoku: number[][]): string[] => {
+  const emptySquareIDs: string[] = [];
+  currentSudoku.forEach((row, rowIndex) => {
+    row.forEach((cell, colIndex) => {
+      if (cell === 0) {
+        emptySquareIDs.push(`${rowIndex}-${colIndex}`);
+      }
+    });
+  });
+  return emptySquareIDs;
+};
+
+//* Focus the input square element with the given id
+export const focusSquareById = async (id: string) => {
+  // Find the square by using id
+  const square = document.getElementById(id) as HTMLInputElement | null;
+  if (!square) return;
+  square.focus();
+  // Set a timeout to be sure to focus on the UI properly
+  await new Promise((res) => setTimeout(res, 100));
+};
+
 //* Find which block the selected square belongs to
 export const findBlock = (
   selectedSquareID: string
@@ -62,7 +85,7 @@ export const updateSquareValue = (
 export const findValidNumber = (
   valuesToCompare: number[],
   setSudokuValues: React.Dispatch<React.SetStateAction<number[][]>>,
-  currentSquareID: string
+  currentSquareID: string | null
 ) => {
   const uniqueValues = Array.from(new Set(valuesToCompare));
   const numbersInSudoku = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -70,29 +93,9 @@ export const findValidNumber = (
   const possibleNumbers = numbersInSudoku.filter(
     (item) => !impossibleNumbers.includes(item)
   );
+  console.log("possible numbers : " + possibleNumbers);
 
-  if (possibleNumbers.length === 1) {
+  if (possibleNumbers.length === 1 && currentSquareID) {
     updateSquareValue(currentSquareID, possibleNumbers[0], setSudokuValues);
   }
-};
-
-//* Identify the IDs of cells with a value of 0 (empty cells)
-export const getEmptySquares = (currentSudoku: number[][]): string[] => {
-  const emptySquareIDs: string[] = [];
-  currentSudoku.forEach((row, rowIndex) => {
-    row.forEach((cell, colIndex) => {
-      if (cell === 0) {
-        emptySquareIDs.push(`${rowIndex}-${colIndex}`);
-      }
-    });
-  });
-  return emptySquareIDs;
-};
-
-//* Focus the input element with the given id
-export const focusSquareById = async (id: string) => {
-  const element = document.getElementById(id) as HTMLInputElement | null;
-  if (!element) return;
-  element.focus();
-  await new Promise((res) => setTimeout(res, 500));
 };

@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
 import Sudoku from "@/components/Sudoku";
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import { emptySudoku } from "@/data/sudokuData";
 import { styleContainer } from "@/styles/homePageStyle";
-import { useSudokuSolver } from "@/hooks/useAutoSolver";
+import { useSudokuSolver } from "@/hooks/useSudokuSolver";
 import DialogComponent from "@/components/DialogComponent";
 import ButtonComponent from "@/components/ButtonComponent";
 
@@ -26,9 +26,6 @@ export default function Home() {
   //! custom hook useSudokuSolver
   const { startAutoSolve, handleFocus } = useSudokuSolver({
     sudokuValues,
-    squaresInRow,
-    squaresInCol,
-    squaresInSelectedBlock,
     setSquaresInRow,
     setSquaresInCol,
     setSudokuValues,
@@ -37,6 +34,15 @@ export default function Home() {
 
   return (
     <Container sx={styleContainer}>
+      <Typography
+        sx={{
+          fontSize: 36,
+          color: "#666",
+          mb: 4,
+        }}
+      >
+        SUDOKU
+      </Typography>
       <Sudoku
         sudokuValues={sudokuValues}
         squaresInRow={squaresInRow}

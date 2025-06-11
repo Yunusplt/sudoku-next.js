@@ -11,10 +11,7 @@ export type SudokuBlocksType = {
 };
 
 export type UseSudokuSolverParams = {
-  squaresInRow: string[] | null;
-  squaresInCol: string[] | null;
   sudokuValues: number[][];
-  squaresInSelectedBlock: string[] | null;
   setSquaresInRow: (squares: string[] | null) => void;
   setSquaresInCol: (squares: string[] | null) => void;
   setSudokuValues: React.Dispatch<React.SetStateAction<number[][]>>;

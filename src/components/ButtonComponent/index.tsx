@@ -7,7 +7,7 @@ const ButtonComponent = ({
   handleClickOpenDialog,
 }: ButtonComponentProps) => {
   return (
-    <Box sx={{ display: "flex", gap: 3, mt: 2 }}>
+    <Box sx={{ display: "flex", gap: 3, mt: 5 }}>
       <Button variant="contained" onClick={handleClickOpenDialog}>
         Sudoku laden
       </Button>
