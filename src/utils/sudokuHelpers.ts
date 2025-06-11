@@ -16,12 +16,11 @@ export const getEmptySquares = (currentSudoku: number[][]): string[] => {
 
 //* Focus the input square element with the given id
 export const focusSquareById = async (id: string) => {
-  // Find the square by using id
   const square = document.getElementById(id) as HTMLInputElement | null;
   if (!square) return;
   square.focus();
-  // Set a timeout to be sure to focus on the UI properly
-  await new Promise((res) => setTimeout(res, 100));
+  //* Set a timeout to be sure to focus on the UI properly
+  await new Promise((res) => setTimeout(res, 300));
 };
 
 //* Find which block the selected square belongs to
@@ -38,64 +37,33 @@ export const findBlock = (
   return null;
 };
 
-//* Take the values from the given squares' IDs
-export const getValuesFromSquares = (
-  squares: string[],
-  sudokuValues: number[][]
-): number[] => {
-  return squares.map((id) => {
-    const [r, c] = id.split("-").map(Number);
-    return sudokuValues[r][c];
-  });
-};
-
-//* Find the all values to compare with empty square
-export const getValuesToCompare = (
+//* Find all possible numbers for the selected square.
+export const getPossibleNumbers = (
   squaresInRow: string[] | null,
   squaresInCol: string[] | null,
   squaresInSelectedBlock: string[] | null,
   sudokuValues: number[][]
 ): number[] => {
   if (!squaresInRow || !squaresInCol || !squaresInSelectedBlock) return [];
-  const rowValues = getValuesFromSquares(squaresInRow, sudokuValues);
-  const colValues = getValuesFromSquares(squaresInCol, sudokuValues);
-  const blockValues = getValuesFromSquares(
-    squaresInSelectedBlock,
-    sudokuValues
-  );
+
+  const rowValues = getValues(squaresInRow, sudokuValues); //* get all values from squaresIDs in specified  row
+  const colValues = getValues(squaresInCol, sudokuValues); //* get all values from squaresIDs in specified  col
+  const blockValues = getValues(squaresInSelectedBlock, sudokuValues); //* get all values from squaresIDs in specified  col
   const valuesToCompare = [...rowValues, ...colValues, ...blockValues];
-  return valuesToCompare;
-};
-
-//* Update the value of current square if there is only one possible value for it
-export const updateSquareValue = (
-  id: string,
-  newValue: number,
-  setSudokuValues: React.Dispatch<React.SetStateAction<number[][]>>
-) => {
-  const [row, col] = id.split("-").map(Number);
-  setSudokuValues((prev) => {
-    const copy = prev.map((row) => [...row]);
-    copy[row][col] = newValue;
-    return copy;
-  });
-};
-
-//* Find the possible numbers for the current square und update the sudokuValues if there is only one possible number
-export const findValidNumber = (
-  valuesToCompare: number[],
-  setSudokuValues: React.Dispatch<React.SetStateAction<number[][]>>,
-  currentSquareID: string | null
-) => {
   const uniqueValues = Array.from(new Set(valuesToCompare));
-  const numbersInSudoku = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const sudokuDigits = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const impossibleNumbers = uniqueValues.filter((item) => item !== 0);
-  const possibleNumbers = numbersInSudoku.filter(
+  const possibleNumbers = sudokuDigits.filter(
     (item) => !impossibleNumbers.includes(item)
   );
-  console.log("possible numbers : " + possibleNumbers);
 
-  if (possibleNumbers.length === 1 && currentSquareID) {
-    updateSquareValue(currentSquareID, possibleNumbers[0], setSudokuValues);
-  }
+  return possibleNumbers;
+};
+
+//* Take the values from the given squares' IDs
+const getValues = (squares: string[], sudokuValues: number[][]): number[] => {
+  return squares.map((id) => {
+    const [r, c] = id.split("-").map(Number);
+    return sudokuValues[r][c];
+  });
 };

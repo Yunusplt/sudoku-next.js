@@ -4,4 +4,10 @@ export const styleContainer = {
   justifyContent: "center",
   alignItems: "center",
   height: "90vh",
+
+  "& p": {
+    fontSize: 36,
+    color: "#666",
+    mb: 4,
+  },
 };
