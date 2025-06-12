@@ -3,17 +3,13 @@ import { emptySudoku } from "@/data/sudokuData";
 
 interface SudokuState {
   sudokuValues: number[][];
-  squaresInRow: string[] | null;
-  squaresInCol: string[] | null;
-  squaresInSelectedBlock: string[] | null;
+  squaresToCompare: string[] | null;
   isOpenDialog: boolean;
 }
 
 const initialState: SudokuState = {
   sudokuValues: emptySudoku,
-  squaresInRow: null,
-  squaresInCol: null,
-  squaresInSelectedBlock: null,
+  squaresToCompare: null,
   isOpenDialog: false,
 };
 
@@ -24,17 +20,8 @@ const sudokuSlice = createSlice({
     setSudokuValues: (state, action: PayloadAction<number[][]>) => {
       state.sudokuValues = action.payload;
     },
-    setSquaresInRow: (state, action: PayloadAction<string[] | null>) => {
-      state.squaresInRow = action.payload;
-    },
-    setSquaresInCol: (state, action: PayloadAction<string[] | null>) => {
-      state.squaresInCol = action.payload;
-    },
-    setSquaresInSelectedBlock: (
-      state,
-      action: PayloadAction<string[] | null>
-    ) => {
-      state.squaresInSelectedBlock = action.payload;
+    setSquaresToCompare: (state, action: PayloadAction<string[] | null>) => {
+      state.squaresToCompare = action.payload;
     },
     setIsOpenDialog: (state, action: PayloadAction<boolean>) => {
       state.isOpenDialog = action.payload;
@@ -42,12 +29,7 @@ const sudokuSlice = createSlice({
   },
 });
 
-export const {
-  setSudokuValues,
-  setSquaresInRow,
-  setSquaresInCol,
-  setSquaresInSelectedBlock,
-  setIsOpenDialog,
-} = sudokuSlice.actions;
+export const { setSudokuValues, setSquaresToCompare, setIsOpenDialog } =
+  sudokuSlice.actions;
 
 export default sudokuSlice.reducer;

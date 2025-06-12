@@ -20,13 +20,24 @@ export const focusSquareById = async (id: string) => {
   if (!square) return;
   square.focus();
   //* Set a timeout to be sure to focus on the UI properly
-  await new Promise((res) => setTimeout(res, 300));
+  await new Promise((res) => setTimeout(res, 200));
+};
+
+export const getAllSquaresToCompare = (
+  row: number,
+  col: number,
+  id: string
+) => {
+  const rowSquares = Array.from({ length: 9 }, (_, i) => `${row}-${i}`); //* get the all square IDs in the row of the selected square
+  const colSquares = Array.from({ length: 9 }, (_, i) => `${i}-${col}`); //* get the all square IDs in the col of the selected square
+  const selectedBlock = findBlock(id);
+  const blockSquares = sudokuBlocks[selectedBlock!]; //* get the all square IDs in the block of the selected square
+
+  return [...rowSquares, ...colSquares, ...blockSquares];
 };
 
 //* Find which block the selected square belongs to
-export const findBlock = (
-  selectedSquareID: string
-): keyof SudokuBlocksType | null => {
+const findBlock = (selectedSquareID: string): keyof SudokuBlocksType | null => {
   for (const block in sudokuBlocks) {
     if (
       sudokuBlocks[block as keyof SudokuBlocksType].includes(selectedSquareID)
@@ -39,17 +50,12 @@ export const findBlock = (
 
 //* Find all possible numbers for the selected square.
 export const getPossibleNumbers = (
-  squaresInRow: string[] | null,
-  squaresInCol: string[] | null,
-  squaresInSelectedBlock: string[] | null,
+  allSquaresToCompare: string[] | null,
   sudokuValues: number[][]
 ): number[] => {
-  if (!squaresInRow || !squaresInCol || !squaresInSelectedBlock) return [];
+  if (!allSquaresToCompare) return [];
 
-  const rowValues = getValues(squaresInRow, sudokuValues); //* get all values from squaresIDs in specified  row
-  const colValues = getValues(squaresInCol, sudokuValues); //* get all values from squaresIDs in specified  col
-  const blockValues = getValues(squaresInSelectedBlock, sudokuValues); //* get all values from squaresIDs in specified  col
-  const valuesToCompare = [...rowValues, ...colValues, ...blockValues];
+  const valuesToCompare = getValues(allSquaresToCompare, sudokuValues);
   const uniqueValues = Array.from(new Set(valuesToCompare));
   const sudokuDigits = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const impossibleNumbers = uniqueValues.filter((item) => item !== 0);

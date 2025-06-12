@@ -1,26 +1,24 @@
 import React, { ChangeEvent } from "react";
 import { Box, TextField } from "@mui/material";
 import { styleTextField } from "@/styles/sudokuStyle";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setSudokuValues } from "@/redux/sudokuSlice";
 import { useSudokuSolver } from "@/hooks/useSudokuSolver";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 const Sudoku = () => {
   //! redux
   const dispatch = useAppDispatch();
-  const { sudokuValues, squaresInRow, squaresInCol, squaresInSelectedBlock } =
-    useAppSelector((state) => state.sudoku);
+  const { sudokuValues, squaresToCompare } = useAppSelector(
+    (state) => state.sudoku
+  );
 
   //! custom hook
   const { handleFocus } = useSudokuSolver();
 
-  //! function
+  //! functions
   const getSquareProps = (rowIndex: number, colIndex: number) => {
     const squareID = `${rowIndex}-${colIndex}`;
-    const isInRow = squaresInRow?.includes(squareID);
-    const isInCol = squaresInCol?.includes(squareID);
-    const isInBlock = squaresInSelectedBlock?.includes(squareID);
-    const isSelected = isInRow || isInCol || isInBlock;
+    const isSelected = squaresToCompare?.includes(squareID);
     const value =
       sudokuValues[rowIndex][colIndex] === 0
         ? ""
