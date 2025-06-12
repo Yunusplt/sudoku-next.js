@@ -1,17 +1,11 @@
-import { sudokuBlocks } from "@/data/sudokuData";
 import { useRef, useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setSudokuValues, setSquaresToCompare } from "@/redux/sudokuSlice";
 import {
-  setSquaresInCol,
-  setSquaresInRow,
-  setSudokuValues,
-  setSquaresInSelectedBlock,
-} from "@/redux/sudokuSlice";
-import {
-  findBlock,
   getEmptySquares,
   focusSquareById,
   getPossibleNumbers,
+  getAllSquaresToCompare,
 } from "@/utils/sudokuHelpers";
 
 export const useSudokuSolver = () => {
@@ -39,7 +33,7 @@ export const useSudokuSolver = () => {
       leftEmptySquares = getEmptySquares(sudokuValuesRef.current);
     }
 
-    //*No empty squares left!!
+    //* No empty squares left!!
     alert("Sudoku wurde erfolgreich gelöst!");
   }, []);
 
@@ -47,20 +41,18 @@ export const useSudokuSolver = () => {
     const focusedSquareID = e.target.id;
     const [row, col] = focusedSquareID.split("-").map(Number);
 
-    const rowSquares = Array.from({ length: 9 }, (_, i) => `${row}-${i}`); //* get the all square IDs in the row of the selected square
-    const colSquares = Array.from({ length: 9 }, (_, i) => `${i}-${col}`); //* get the all square IDs in the col of the selected square
-    const selectedBlock = findBlock(focusedSquareID);
-    const blockSquares = selectedBlock ? sudokuBlocks[selectedBlock] : null; //* get the all square IDs in the block of the selected square
+    //* get the all squares which are used to compare
+    const allSquaresToCompare = getAllSquaresToCompare(
+      row,
+      col,
+      focusedSquareID
+    );
 
-    dispatch(setSquaresInRow(rowSquares));
-    dispatch(setSquaresInCol(colSquares));
-    dispatch(setSquaresInSelectedBlock(blockSquares));
+    dispatch(setSquaresToCompare(allSquaresToCompare));
 
     //* Find possible numbers and apply valid number
     const possibleNumbers = getPossibleNumbers(
-      rowSquares,
-      colSquares,
-      blockSquares,
+      allSquaresToCompare,
       sudokuValues
     );
 
