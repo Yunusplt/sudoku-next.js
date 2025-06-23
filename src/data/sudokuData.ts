@@ -16,7 +16,7 @@ export const sudokuBlocks: SudokuBlocksType = {
   I: ["6-6", "6-7", "6-8", "7-6", "7-7", "7-8", "8-6", "8-7", "8-8"],
 };
 
-export const example_1: number[][] = [
+const example_1: number[][] = [
   [6, 7, 2, 0, 0, 0, 9, 0, 4],
   [0, 3, 0, 9, 0, 6, 0, 5, 7],
   [5, 4, 0, 7, 2, 8, 0, 0, 0],
@@ -28,7 +28,7 @@ export const example_1: number[][] = [
   [4, 0, 0, 0, 0, 0, 3, 0, 0],
 ];
 
-export const example_2: number[][] = [
+const example_2: number[][] = [
   [9, 0, 4, 0, 3, 1, 0, 7, 2],
   [0, 1, 0, 0, 0, 7, 0, 0, 0],
   [2, 5, 7, 0, 0, 9, 8, 0, 0],
@@ -40,7 +40,7 @@ export const example_2: number[][] = [
   [1, 9, 6, 7, 0, 0, 2, 8, 0],
 ];
 
-export const example_3: number[][] = [
+const example_3: number[][] = [
   [0, 0, 0, 9, 6, 0, 5, 0, 4],
   [0, 2, 0, 1, 0, 0, 0, 6, 0],
   [5, 0, 0, 0, 0, 0, 8, 0, 9],
@@ -50,4 +50,19 @@ export const example_3: number[][] = [
   [9, 8, 4, 5, 0, 1, 0, 0, 6],
   [2, 0, 0, 0, 0, 9, 1, 0, 8],
   [0, 0, 0, 8, 2, 7, 9, 0, 0],
+];
+
+export const examples = [
+  {
+    name: "Beispiel 1",
+    data: example_1,
+  },
+  {
+    name: "Beispiel 2",
+    data: example_2,
+  },
+  {
+    name: "Beispiel 3",
+    data: example_3,
+  },
 ];

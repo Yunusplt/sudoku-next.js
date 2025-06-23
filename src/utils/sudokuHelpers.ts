@@ -73,3 +73,26 @@ const getValues = (squares: string[], sudokuValues: number[][]): number[] => {
     return sudokuValues[r][c];
   });
 };
+
+//! For UI
+export const getSquareProps = ({
+  rowIndex,
+  colIndex,
+  sudokuValues,
+  squaresToCompare,
+}: {
+  rowIndex: number;
+  colIndex: number;
+  sudokuValues: number[][];
+  squaresToCompare?: string[] | null;
+}) => {
+  const squareID = `${rowIndex}-${colIndex}`;
+  const isSelected = squaresToCompare?.includes(squareID);
+
+  const value =
+    sudokuValues[rowIndex][colIndex] === 0
+      ? ""
+      : sudokuValues[rowIndex][colIndex];
+
+  return { isSelected, squareID, value };
+};

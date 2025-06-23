@@ -40,6 +40,7 @@ export const useSudokuSolver = () => {
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     const focusedSquareID = e.target.id;
     const [row, col] = focusedSquareID.split("-").map(Number);
+    if (sudokuValuesRef.current[row][col] !== 0) return; // If the square already has a value, do nothing
 
     //* get the all squares which are used to compare
     const allSquaresToCompare = getAllSquaresToCompare(
