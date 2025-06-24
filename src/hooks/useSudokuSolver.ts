@@ -5,7 +5,7 @@ import {
   getEmptySquares,
   focusSquareById,
   getPossibleNumbers,
-  getAllSquaresToCompare,
+  getAllSquaresIdToCompare,
 } from "@/utils/sudokuHelpers";
 
 export const useSudokuSolver = () => {
@@ -43,17 +43,17 @@ export const useSudokuSolver = () => {
     if (sudokuValues[row][col] !== 0) return; // If the square already has a value, do nothing
 
     //* get the all squares which are used to compare
-    const allSquaresToCompare = getAllSquaresToCompare(
+    const allSquaresIdToCompare = getAllSquaresIdToCompare(
       row,
       col,
       focusedSquareID
     );
 
-    dispatch(setSquaresToCompare(allSquaresToCompare));
+    dispatch(setSquaresToCompare(allSquaresIdToCompare));
 
     //* Find possible numbers and apply valid number
     const possibleNumbers = getPossibleNumbers(
-      allSquaresToCompare,
+      allSquaresIdToCompare,
       sudokuValues
     );
 

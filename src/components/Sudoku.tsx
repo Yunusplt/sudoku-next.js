@@ -43,7 +43,7 @@ const Sudoku = () => {
             });
             return (
               <TextField
-                key={`cell-${squareID}`}
+                key={`square-${squareID}`}
                 id={squareID}
                 variant="outlined"
                 type="number"
