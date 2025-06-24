@@ -1,12 +1,12 @@
 import { sudokuBlocks } from "@/data/sudokuData";
 import { SudokuBlocksType } from "@/types/sudokuTypes";
 
-//* Identify the IDs of cells with a value of 0 (empty cells)
+//* Identify the IDs of squares with a value of 0 (empty squares)
 export const getEmptySquares = (currentSudoku: number[][]): string[] => {
   const emptySquareIDs: string[] = [];
   currentSudoku.forEach((row, rowIndex) => {
-    row.forEach((cell, colIndex) => {
-      if (cell === 0) {
+    row.forEach((square, colIndex) => {
+      if (square === 0) {
         emptySquareIDs.push(`${rowIndex}-${colIndex}`);
       }
     });
@@ -19,11 +19,11 @@ export const focusSquareById = async (id: string) => {
   const square = document.getElementById(id) as HTMLInputElement | null;
   if (!square) return;
   square.focus();
-  //* Set a timeout to be sure to focus on the UI properly
+  //* Set a timeout to be sure to focus on the UI properly and avoid any potential timing issues
   await new Promise((res) => setTimeout(res, 200));
 };
 
-export const getAllSquaresToCompare = (
+export const getAllSquaresIdToCompare = (
   row: number,
   col: number,
   id: string
@@ -72,4 +72,27 @@ const getValues = (squares: string[], sudokuValues: number[][]): number[] => {
     const [r, c] = id.split("-").map(Number);
     return sudokuValues[r][c];
   });
+};
+
+//! For UI
+export const getSquareProps = ({
+  rowIndex,
+  colIndex,
+  sudokuValues,
+  squaresToCompare,
+}: {
+  rowIndex: number;
+  colIndex: number;
+  sudokuValues: number[][];
+  squaresToCompare?: string[] | null;
+}) => {
+  const squareID = `${rowIndex}-${colIndex}`;
+  const isSelected = squaresToCompare?.includes(squareID);
+
+  const value =
+    sudokuValues[rowIndex][colIndex] === 0
+      ? ""
+      : sudokuValues[rowIndex][colIndex];
+
+  return { isSelected, squareID, value };
 };

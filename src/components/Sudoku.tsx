@@ -2,6 +2,7 @@ import React, { ChangeEvent } from "react";
 import { Box, TextField } from "@mui/material";
 import { styleTextField } from "@/styles/sudokuStyle";
 import { setSudokuValues } from "@/redux/sudokuSlice";
+import { getSquareProps } from "@/utils/sudokuHelpers";
 import { useSudokuSolver } from "@/hooks/useSudokuSolver";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
@@ -16,17 +17,6 @@ const Sudoku = () => {
   const { handleFocus } = useSudokuSolver();
 
   //! functions
-  const getSquareProps = (rowIndex: number, colIndex: number) => {
-    const squareID = `${rowIndex}-${colIndex}`;
-    const isSelected = squaresToCompare?.includes(squareID);
-    const value =
-      sudokuValues[rowIndex][colIndex] === 0
-        ? ""
-        : sudokuValues[rowIndex][colIndex];
-
-    return { isSelected, squareID, value };
-  };
-
   const handleOnChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     rowIndex: number,
@@ -45,13 +35,15 @@ const Sudoku = () => {
         <Box key={`row-${rowIndex}`} sx={{ display: "flex" }}>
           {/* // Render Cols */}
           {row.map((_, colIndex) => {
-            const { isSelected, squareID, value } = getSquareProps(
+            const { isSelected, squareID, value } = getSquareProps({
               rowIndex,
-              colIndex
-            );
+              colIndex,
+              sudokuValues,
+              squaresToCompare,
+            });
             return (
               <TextField
-                key={`cell-${squareID}`}
+                key={`square-${squareID}`}
                 id={squareID}
                 variant="outlined"
                 type="number"
